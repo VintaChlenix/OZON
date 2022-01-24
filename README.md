@@ -4,3 +4,5 @@
 
 
 `docker-compose build; docker-compose up`
+
+В Dockerfile выставлен параметр запуска на PostgreSQL, но по умолчанию он - InMemory.
