@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type GetHandler struct{
+type GetHandler struct {
 	data db.DB
 }
 
@@ -15,18 +15,17 @@ func NewGetHandler(data db.DB) *GetHandler {
 	return &GetHandler{data: data}
 }
 
-func (h GetHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
+func (h GetHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	key,ok:=vars["key"]
-	if !ok{
+	key, ok := vars["key"]
+	if !ok {
 		fmt.Println("Key Undefined")
 		return
 	}
 	url, err := h.data.GetURL(key)
-	if err!=nil{
-		fmt.Println("Cannot get URL")
+	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
 	w.Write([]byte(url))
 }
-

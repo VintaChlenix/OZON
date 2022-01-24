@@ -14,6 +14,13 @@ func NewPostgresDB(data *sql.DB) *PostgresDB {
 }
 
 func (p PostgresDB) AddURL(url, key string) error {
+	if checkStmt, err := p.db.Exec(`SELECT "key" FROM "urls" WHERE "key"=$1`, key); checkStmt != nil {
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+		return err
+	}
 	insertStmt := `INSERT INTO "urls"("key", "url") VALUES($1, $2)`
 	_, err := p.db.Exec(insertStmt, key, url)
 	return err
@@ -32,7 +39,7 @@ func (p PostgresDB) GetURL(key string) (string, error) {
 	case nil:
 		return url, err
 	default:
-		fmt.Println("Error")
+		fmt.Println(err.Error())
 		return url, err
 	}
 }
