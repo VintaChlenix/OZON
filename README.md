@@ -7,6 +7,8 @@ docker-compose build
 docker-compose up
 ```
 
+В Dockerfile выставлен параметр запуска на PostgreSQL, но по умолчанию он - InMemory.
+
 CURL запросы:
 ```
 POST:
@@ -22,4 +24,9 @@ curl --request GET \
   
 ```
 
-В Dockerfile выставлен параметр запуска на PostgreSQL, но по умолчанию он - InMemory.
+Тестирование:
+
+```
+cd internal/handlers
+go test
+```
