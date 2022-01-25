@@ -19,7 +19,7 @@ func (h GetHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key, ok := vars["key"]
 	if !ok {
-		fmt.Println("Key Undefined")
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	url, err := h.data.GetURL(key)

@@ -28,9 +28,15 @@ func (h AddHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	url := r.Form.Get("url")
 	if url == "" {
-		fmt.Println("Empty URL")
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+	str := URLEncode(url, h)
+	h.data.AddURL(url, str)
+	w.Write([]byte("localhost:8080/" + str))
+}
+
+func URLEncode(url string, h AddHandler) string {
 	hash := fnv.New64a()
 	hash.Write([]byte(url))
 	hashSum := hash.Sum64()
@@ -38,6 +44,5 @@ func (h AddHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	binary.LittleEndian.PutUint64(b, hashSum)
 	str := h.encoder.Encode(b)
 	str = str[:10]
-	h.data.AddURL(url, str)
-	w.Write([]byte("localhost:8080/" + str))
+	return str
 }
